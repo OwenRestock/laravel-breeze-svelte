@@ -8,10 +8,12 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "based/momentum-trail": "^0.3.0",
-        "inertiajs/inertia-laravel": "^1.0",
-        "laravel/framework": "^11.9",
+        "inertiajs/inertia-laravel": "^2.0",
+        "laravel/framework": "^11.36",
+        "laravel/octane": "^2.6",
+        "laravel/pail": "^1.2",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "tightenco/ziggy": "^2.0"
@@ -21,10 +23,12 @@
         "laravel/breeze": "^2.1",
         "laravel/pint": "^1.13",
         "laravel/sail": "^1.26",
+        "laravel/telescope": "^5.2",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.0",
         "pestphp/pest": "^2.0",
-        "pestphp/pest-plugin-laravel": "^2.0"
+        "pestphp/pest-plugin-laravel": "^2.0",
+        "tightenco/duster": "^3.1"
     },
     "autoload": {
         "psr-4": {
@@ -53,6 +57,17 @@
             "@php artisan key:generate --ansi",
             "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
             "@php artisan migrate --graceful --ansi"
+        ],
+        "dev": [
+            "Composer\\Config::disableProcessTimeout",
+            "pnpx concurrently -c \"#93c5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,logs,vite"
+        ],
+        "dev:a": [
+            "Composer\\Config::disableProcessTimeout",
+            "pnpx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite"
+        ],
+        "lint": [
+            "./vendor/bin/duster fix --dirty"
         ]
     },
     "extra": {
